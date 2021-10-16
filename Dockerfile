@@ -1,7 +1,20 @@
-FROM nginx:1.21.3
+FROM pingme998/nginxrc:latest
 
-COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+COPY default.conf.template /default.conf.template
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY static-html /usr/share/nginx/html
-
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon off;'
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY rclon1 /usr/bin/rclon1
+COPY rclon2 /usr/bin/rclon2
+COPY rclon3 /usr/bin/rclon3
+COPY rclon4 /usr/bin/rclon4
+COPY default /default
+COPY rcxstart /usr/bin/rcxstart
+RUN chmod +x /usr/bin/rclon1
+RUN chmod +x /usr/bin/rclon2
+RUN chmod +x /usr/bin/rclon3
+RUN chmod +x /usr/bin/rclon4
+RUN chmod +x /usr/bin/rcxstart
+COPY e.sh /e.sh
+RUN chmod +x /e.sh
+CMD /e.sh
